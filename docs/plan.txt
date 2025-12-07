@@ -1,0 +1,90 @@
+Outline of Project Elements:
+
+1. Grid Representation:
+    Piece Types:
+        +  Leaf     -> Obstacle
+        +  Flower   -> Obstacle
+        +  Apple    -> Obstacle
+        +  Berry    -> Obstacle
+        +  Lemonade
+    
+    Cells On Grid:
+        +  Contain an Obstacle
+        +  Contain the Lemonade
+        +  Empty
+        +  Full --> Obstacle or Lemonade
+
+    Location Utilities (Maybe set up to take in row/column or x/y):
+        +  Is at bottom
+        +  Has something above
+        +  Has something below
+        +  Has something to the left
+        +  Has something to the right
+    
+    Maybe Some Additional Utilities to Help with Matching:
+        +  Has same type as cell to the left
+        +  Has same type as cell to the right
+        +  Has same type as cell above
+        +  Has same type as cell below
+        +  Number of same types touching at all sides (Up, Down, Left, Right)
+
+    Grid Representation:
+        +  Simple Version: 2D Grid
+    
+2. Grid Access
+    Access Methods:
+        +  Get Cell Content
+        +  Set Cell Content
+        +  Check if Cell is Full
+        +  Check if Cell is Empty
+        +  Swap Cells
+
+3. Pattern Detection
+    Functions to Include:
+        +  Scan the entire grid for matches
+        +  Identify patterns of obstacles
+            - 3 in a row - Horizontal
+            - 3 in a row - Vertical
+            - 4 in a row - Horizontal
+            - 4 in a row - Vertical
+            - 5 in a row - Horizontal
+            - 5 in a row - Vertical
+            - (Maybe Later):
+                * L-shape
+                * T-shape
+        +   Check if move generates a pattern
+            +   Should be set up to accept two cell positions as input
+
+4. Reset Grid
+    Functionality to Include:
+        +  Obstacles drop down to fill empty spaces
+        +  Empty cells pad at the top if nothing else there
+
+5. Moves
+    Things to Include:
+        +  Rules for Valid Moves
+            -  bounds of the grid
+            -  swapping only adjacent cells
+            -  allowed to swap:
+                * Obstacle with Obstacle
+                * Obstacle with Lemonade
+                * Objectacle with Empty
+            -  not allowed to swap:
+                * Empty with Empty
+                * Lemonade with Lemonade
+            -  Valid moves must result in at least one pattern being formed
+        +  Adjusting the Grid After a Move
+            -  swap the two cells
+            -  check for patterns
+            -  if patterns found, reset the grid
+            -  if no patterns found, swap back
+        +  Transitioning Grid:
+            -  Execute the reset grid actions in order
+
+6. Goal Cond
+    Things to Include:
+        +   Scan the grid to see if all lemonade is at the bottom
+
+7. Plan Algorithm
+
+8. Main File
