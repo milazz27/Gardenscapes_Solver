@@ -10,6 +10,7 @@ get_grid_dimensions(Width, Height) :-
     grid_width(Width),
     grid_height(Height).
 
+% Lookup piece type
 identify_piece(State, Row, Col, Type) :-
     member(piece(Type, Row, Col), State).
 
