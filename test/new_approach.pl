@@ -1,5 +1,5 @@
 :- consult('../src/grid.pl').
-:- consult('testStates2.pl').
+:- consult('testState3.pl').
 :- consult('../src/export.pl').
 
 %===============================================================================================%
@@ -10,9 +10,37 @@ member_sublist(Pos, List) :-
     member(Sub, List),
     member(Pos, Sub).
 
+full_cell_at(State, Pos, Kind) :-
+    member(cell(Kind, Pos), State).
+
 set_empty(State, Pos, NewState) :-
     select(cell(_, Pos), State, Temp),
     NewState = [cell(none(empty), Pos) | Temp].
+
+update_cell(State, Pos, NewKind, NewState) :-
+    select(cell(_, Pos), State, Temp),
+    NewState = [cell(NewKind, Pos) | Temp].
+
+get_column_vals(_, [], []).
+
+get_column_vals(State, [Pos | Rest], [Kind | Tail]) :-
+    full_cell_at(State, Pos, Kind),
+    get_column_vals(State, Rest, Tail).
+
+split_empty([], [], []).
+
+split_empty([none(empty) | T], [none(empty) | E], N) :-
+    split_empty(T, E, N).
+
+split_empty([X | T], E, [X | N]) :-
+    X \= none(empty),
+    split_empty(T, E, N).
+
+apply_column_updates(State, [], [], State).
+
+apply_column_updates(State, [Pos|Ptail], [Kind|Ktail], FinalState) :-
+    update_cell(State, Pos, Kind, TempState),
+    apply_column_updates(TempState, Ptail, Ktail, FinalState).
 
 %===============================================================================================%
 %   Piece-Type Lookup Methods:                                                                  %
@@ -134,6 +162,20 @@ apply_gravity(State, Final) :-
     cols(Cols),
     gravity_columns(State, Cols, Final).
 
+gravity_column(State, ColumnPositions, NewState) :-
+
+    % get the values in the column
+    get_column_vals(State, ColumnPositions, Values),
+
+    % split values into empties and non-empty pieces
+    split_empty(Values, Empties, NonEmpties),
+
+    % apply gravity: empties at top, pieces at bottom
+    append(Empties, NonEmpties, NewValues),
+
+    % write the new values back into State
+    apply_column_updates(State, ColumnPositions, NewValues, NewState).
+
 gravity_columns(State, [], State).
 
 gravity_columns(State, [ColPositions | Rest], Final) :-
@@ -172,6 +214,15 @@ test_empty_cells(State, Filename1, Filename2) :-
     find_all_matches(State, All),
     remove_matches(All, State, NewState),
     export_state_to_json(NewState, Filename2).
+
+% state3(State), test_gravity(State, 'p1.json', 'p2.json', 'p3.json').
+test_gravity(State, File1, File2, File3) :-
+    export_state_to_json(State, File1),
+    find_all_matches(State, All),
+    remove_matches(All, State, NewState),
+    export_state_to_json(NewState, File2),
+    apply_gravity(NewState, Final),
+    export_state_to_json(Final, File3).
 
 
 
