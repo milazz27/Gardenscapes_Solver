@@ -1,11 +1,11 @@
-state([
+state3([
     cell(obstacle(flower), pos(0,0)),
-    cell(obstacle(flower), pos(0,1)),
+    cell(obstacle(water), pos(0,1)),
     cell(obstacle(flower), pos(0,2)),
-    cell(obstacle(flower), pos(0,3)),
+    cell(obstacle(berry), pos(0,3)),
 
-    cell(obstacle(flower), pos(1,0)),
-    cell(obstacle(flower), pos(1,1)),
+    cell(obstacle(water), pos(1,0)),
+    cell(obstacle(leaf), pos(1,1)),
     cell(obstacle(flower), pos(1,2)),
     cell(obstacle(flower), pos(1,3)),
 
