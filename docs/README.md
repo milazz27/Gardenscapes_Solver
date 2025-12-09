@@ -1,4 +1,4 @@
-##Intro to Logic-Based AI Final Project (Fall 2025)
+##Intro to Logic-Based AI Final Project (Fall 2025)##
 
 ![Current Progress](checkpoint1.gif)
 
