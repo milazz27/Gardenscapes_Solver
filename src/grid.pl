@@ -12,11 +12,11 @@ is_obstacle(berry).
 is_obstacle(water).
 
 % obstacle(X, A, B) :- X in {leaf, flower, apple, berry, water} AND A AND B
-obstacle(leaf, Row, Col).
-obstacle(flower, Row, Col).
-obstacle(apple, Row, Col).
-obstacle(berry, Row, Col).
-obstacle(water, Row, Col).
+obstacle(leaf, pos(Row, Col)).
+obstacle(flower, pos(Row, Col)).
+obstacle(apple, pos(Row, Col)).
+obstacle(berry, pos(Row, Col)).
+obstacle(water, pos(Row, Col)).
 
 %-------------------------------------------------------------------------------------------%
 % Defining Objects:
@@ -26,43 +26,25 @@ obstacle(water, Row, Col).
 is_object(lemonade).
 
 % object(X,A,B) :- X in {lemonade} AND A AND B
-object(lemonade, Row, Col).
+object(lemonade, pos(Row, Col)).
 
 %-------------------------------------------------------------------------------------------%
 % Definition for Empty Cells
 %-------------------------------------------------------------------------------------------%
 
-is_empty(empty).
+is_none(empty).
 
-empty(empty, Row, Col).
+none(empty, pos(Row, Col)).
 
 %-------------------------------------------------------------------------------------------%
 % Definition for Extra Grid Utilities:
 %-------------------------------------------------------------------------------------------%
 
-% find the max row value
-row_bound(Bound) :-
-    grid_height(Height),
-    Bound is Height - 1.
+get_row_col(pos(R, C), R, C).
 
-% find the max col value
-col_bound(Bound) :-
-    grid_width(Width),
-    Bound is Width - 1.
+get_row(pos(R, _), R).
 
-% in_bounds(X,Y) :- X >= 0 AND X <= B1 AND Y >= 0 AND Y <= B2
-in_bounds(Row, Col) :-
-    row_bound(B1),
-    col_bound(B2),
-    Row >= 0,
-    Row =< B1,
-    Col >= 0,
-    Col =< B2.
-
-% at_floor(Y) :- Y == B
-at_floor(Col) :-
-    row_bound(B),
-    Col =:= B.
+get_col(pos(_,C), C).
 
 %-------------------------------------------------------------------------------------------%
 % Definition for Adjacency:
