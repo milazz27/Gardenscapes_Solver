@@ -32,9 +32,9 @@ object(lemonade, Row, Col).
 % Definition for Empty Cells
 %-------------------------------------------------------------------------------------------%
 
-is_empty(empty).
+is_none(empty).
 
-empty(empty, Row, Col).
+none(empty, Row, Col).
 
 %-------------------------------------------------------------------------------------------%
 % Definition for Extra Grid Utilities:

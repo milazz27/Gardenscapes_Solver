@@ -28,42 +28,17 @@ piece_in_match(Row, Col, Matches) :-
 % Verifying Horizontal Matches:
 %-------------------------------------------------------------------------------------------%
 
-% case where we can add a piece to matches
-check_move_right(State, GoalType, Row, Col, Matches, NewMatches, []) :-
-    identify_piece(State, Row, Col, Type),
-    GoalType == Type,
-    append([(Row, Col)], Matches, NewMatches).
+% Test Run:  state_four_match(State), row_traversal(State, 2, 0, V).
+row_traversal(_, _, Col, Visited, Visited) :-
+    Col >= 4.
 
-% case where we need to clear matches (we hit a diff piece type and our anchor piece not in matches)
-check_move_right(State, GoalType, Row, Col, Matches, [], [Matches]) :-
-    identify_piece(State, Row, Col, Type),
-    GoalType \= Type,
-    length(Matches, Len),
-    Len >= 3 .
-
-% Discard short run (different type AND length < 3)
-check_move_right(State, GoalType, Row, Col, Matches, [], []) :-
-    identify_piece(State, Row, Col, Type),
-    GoalType \= Type,
-    length(Matches, Len),
-    Len < 3.
-
-%base case for check_row (trying to move beyond the bound)
-check_row(_, _, Col, Matches, [Matches]) :-
-    col_bound(Bound),
-    Col > Bound, !,
-    length(Matches, Len),
-    Len >= 3.
-
-% Main recursive call for verifying matches in a row.
-check_row(State, Row, Col, Matches, AllMatches) :-
-    col_bound(Bound),
-    Col =< Bound,
-    identify_piece(State, Row, Col, Type),
-    check_move_right(State, Type, Row, Col, Matches, NewMatches, NewGroup),
+row_traversal(State, Row, Col, Visited, Final) :-
+    Col < 3,
+    append(Visited, [(Row, Col)], Updated),
     right_step(Row, Col, NewCol),
-    check_row(State, Row, NewCol, NewMatches, SubMatches),
-    append(NewGroup, SubMatches, AllMatches).
+    row_traversal(State, Row, NewCol, Updated, Final).
+
+
 
 %-------------------------------------------------------------------------------------------%
 % Public Calls For Single-Piece Membership in Match.
