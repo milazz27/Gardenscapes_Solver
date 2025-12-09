@@ -4,24 +4,24 @@ def printGrid(grid):
     for row in grid:
         for cell in row:
             if cell == 1:
-                print(" 🍀 ", end = "")
+                print(" 🍀   ", end = "")
             elif cell == 2:
-                print(" 🌸 ", end = "")
+                print(" 🌸   ", end = "")
             elif cell == 3:
-                print(" 🍎 ", end = "")
+                print(" 🍎   ", end = "")
             elif cell == 4:
-                print(" 🫐 ", end = "")
+                print(" 🫐   ", end = "")
             elif cell == 5:
-                print(" 💧 ", end = "")
+                print(" 💧   ", end = "")
             elif cell == 6:
-                print(" 🍹 ", end = "")
-            else:
-                print(" • ", end = "")
+                print(" 🍹   ", end = "")
+            elif cell == 0:
+                print(" ⬜   ", end = "")
         print("\n")
 
 
 
-with open("out.json") as json_file:
+with open("../test/p3.json") as json_file:
     level = json.load(json_file)
 
 width = level["width"]
@@ -31,9 +31,11 @@ pieces = level["pieces"]
 grid = [[0 for _ in range(width)] for _ in range(height)]
 
 for piece in pieces:
-    y = piece["col"]
     x = piece["row"]
+    y = piece["col"]
     type = piece["type"]
+
+    print()
 
     if type == "leaf":
         grid[x][y] = 1

@@ -1,4 +1,6 @@
-## Intro to Logic-Based AI Final Project (Fall 2025)
+##Intro to Logic-Based AI Final Project (Fall 2025)##
+
+![Current Progress](checkpoint1.gif)
 
 This project will be aimed at building an AI Agent to solve (my favorite mobile game) 'Gardenscapes.' To do this I will employ a planning approach in Prolog. 
 
