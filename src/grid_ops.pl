@@ -12,7 +12,7 @@ get_grid_dimensions(Width, Height) :-
 
 % Lookup piece type
 identify_piece(State, Row, Col, Type) :-
-    member(piece(Type, Row, Col), State).
+    member(piece(obstacle(Type), Row, Col), State).
 
 % swap operation
 swap_op(State, Type1, R1, C1, Type2, R2, C2, NewState) :-

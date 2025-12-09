@@ -1,3 +1,7 @@
+:- consult('../test/testStates.pl').
+:- ['grid_ops.pl'].
+:- ['grid.pl'].
+
 %-------------------------------------------------------------------------------------------%
 % Grid Traversal Methods:
 %-------------------------------------------------------------------------------------------%
@@ -15,39 +19,56 @@ step_down(Row, NewRow, Col) :-
 % Verifying Horizontal Matches:
 %-------------------------------------------------------------------------------------------%
 
-ctr_increment(Ctr, NewCtr) :-
-    NewCtr is Ctr + 1.
+% checks if piece is contained within a run of same pieces
+piece_in_match(Row, Col, Matches) :-
+    member(Sub, Matches),
+    member((Row, Col), Sub).
 
-% base case:
-horizontal_match_check(State, Row, Col, Ctr, Matches) :-
-    Ctr >= 3,
-    member((Row, Col), Matches).
+%-------------------------------------------------------------------------------------------%
+% Verifying Horizontal Matches:
+%-------------------------------------------------------------------------------------------%
 
-% add another piece to matches -- processes after a step is taken
-check_move_right(State, GoalType, Row, Col, Ctr, OGMatches, Matches) :-
+% case where we can add a piece to matches
+check_move_right(State, GoalType, Row, Col, Matches, NewMatches, []) :-
     identify_piece(State, Row, Col, Type),
-    Type = GoalType,
-    append([(Row, Col)], OGMatches, Matches)
-    ctr_increment(Ctr, NewCtr),
-    Ctr is NewCtr.
+    GoalType == Type,
+    append([(Row, Col)], Matches, NewMatches).
 
-%checks if run is over (hit a different piece) and but valid match found
-check_move_right(State, GoalType, Row, Col, Ctr, OGMatches, Matches) :-
+% case where we need to clear matches (we hit a diff piece type and our anchor piece not in matches)
+check_move_right(State, GoalType, Row, Col, Matches, [], [Matches]) :-
     identify_piece(State, Row, Col, Type),
-    +\ Type = GoalType,
-    horizontal_match_check(State, Row, Col, Ctr, Matches).
+    GoalType \= Type,
+    length(Matches, Len),
+    Len >= 3 .
 
-%checks if run is over (hit a different piece) and but valid match found
-check_move_right(State, GoalType, Row, Col, Ctr, OGMatches, Matches) :-
+% Discard short run (different type AND length < 3)
+check_move_right(State, GoalType, Row, Col, Matches, [], []) :-
     identify_piece(State, Row, Col, Type),
-    +\ Type = GoalType,
-    horizontal_match_check(State, Row, Col, Ctr, OGMatches).
+    GoalType \= Type,
+    length(Matches, Len),
+    Len < 3.
 
-% checks if run is over (at the bound)
-check_move_right(State, GoalType, Row, Col, Ctr, OGMatches, Matches) :-
+%base case for check_row (trying to move beyond the bound)
+check_row(_, _, Col, Matches, [Matches]) :-
     col_bound(Bound),
-    Col =:= Bound,
-    horizontal_match_check(State, Row, Col, Ctr, OGMatches).
+    Col > Bound, !,
+    length(Matches, Len),
+    Len >= 3.
 
-creates_horizontal_match(State, Type, Row, Col) :-
+% Main recursive call for verifying matches in a row.
+check_row(State, Row, Col, Matches, AllMatches) :-
+    col_bound(Bound),
+    Col =< Bound,
+    identify_piece(State, Row, Col, Type),
+    check_move_right(State, Type, Row, Col, Matches, NewMatches, NewGroup),
+    right_step(Row, Col, NewCol),
+    check_row(State, Row, NewCol, NewMatches, SubMatches),
+    append(NewGroup, SubMatches, AllMatches).
 
+%-------------------------------------------------------------------------------------------%
+% Public Calls For Single-Piece Membership in Match.
+%-------------------------------------------------------------------------------------------%
+
+creates_match(State, Row, Col, AllMatches) :-
+    check_row(State, Row, 0, [], AllMatches),
+    piece_in_match(Row, Col, AllMatches).
