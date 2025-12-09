@@ -27,3 +27,6 @@ cols([
     [pos(0, 2), pos(1,2), pos(2,2)],
     [pos(0, 3), pos(1,3), pos(2,3)]
 ]).
+
+width(4).
+height(3).

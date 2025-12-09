@@ -1,5 +1,6 @@
 :- consult('../src/grid.pl').
 :- consult('testStates2.pl').
+:- consult('../src/export.pl').
 
 %===============================================================================================%
 %   Misc Helper Methods:                                                                        %
@@ -129,7 +130,6 @@ remove_matches([H|T], State, NewState) :-
     remove_matches(T, New, NewState).
 
 % 2. Carry objects down to fill empty spots (prob go column by column to do this)
-
 apply_gravity(State, Final) :-
     cols(Cols),
     gravity_columns(State, Cols, Final).
@@ -165,6 +165,13 @@ public_method_check_move(State, Pos) :-
     piece_at(State, Pos, Type),
     traverse(State, Type, T2, [Pos], [], Final2),
     member_sublist(Pos, Final2).
+
+% state(State), test_empty_cells(State, 'out.json').
+test_empty_cells(State, Filename1, Filename2) :-
+    export_state_to_json(State, Filename1),
+    find_all_matches(State, All),
+    remove_matches(All, State, NewState),
+    export_state_to_json(NewState, Filename2).
 
 
 
