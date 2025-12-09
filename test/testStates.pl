@@ -1,70 +1,67 @@
-% Tests for Horizontal Matching:
+% test : public_method(S, [pos(0,0), pos(0,1), pos(0,2), pos(0,3)], F).
 
-state_no_matches([
-    piece(obstacle(leaf),   1, 0),
-    piece(obstacle(water),  1, 1),
-    piece(obstacle(apple),  1, 2),
-    piece(obstacle(berry),  1, 3),
-
-    piece(obstacle(flower), 2, 0),
-    piece(obstacle(berry),  2, 1),
-    piece(obstacle(flower), 2, 2),
-    piece(obstacle(water),  2, 3),
-
-    piece(obstacle(leaf),   3, 0),
-    piece(obstacle(water),  3, 1),
-    piece(obstacle(apple),  3, 2),
-    piece(obstacle(flower), 3, 3)
+state([
+    cell(obstacle(flower), pos(0,0)),
+    cell(obstacle(flower), pos(0,1)),
+    cell(obstacle(flower), pos(0,2)),
+    cell(obstacle(flower), pos(0,3))
 ]).
 
-state_single_match([
-    piece(obstacle(leaf),   1, 0),
-    piece(obstacle(apple),  1, 1),
-    piece(obstacle(apple),  1, 2),
-    piece(obstacle(apple),  1, 3),
-
-    piece(obstacle(flower), 2, 0),
-    piece(obstacle(berry),  2, 1),
-    piece(obstacle(flower), 2, 2),
-    piece(obstacle(water),  2, 3),
-
-    piece(obstacle(leaf),   3, 0),
-    piece(obstacle(water),  3, 1),
-    piece(obstacle(apple),  3, 2),
-    piece(obstacle(flower), 3, 3)
+state1([
+    cell(obstacle(flower), pos(0,0)),
+    cell(obstacle(flower), pos(0,1)),
+    cell(obstacle(flower), pos(0,2)),
+    cell(obstacle(water), pos(0,3))
 ]).
 
-state_four_match([
-    piece(obstacle(leaf),    1, 0),
-    piece(obstacle(water),   1, 1),
-    piece(obstacle(apple),   1, 2),
-    piece(obstacle(berry),   1, 3),
-
-    piece(obstacle(flower),  2, 0),
-    piece(obstacle(flower),  2, 1),
-    piece(obstacle(flower),  2, 2),
-    piece(obstacle(flower),  2, 3),
-
-    piece(obstacle(leaf),    3, 0),
-    piece(obstacle(water),   3, 1),
-    piece(obstacle(apple),   3, 2),
-    piece(obstacle(flower),  3, 3)
+state2([
+    cell(obstacle(flower), pos(0,0)),
+    cell(obstacle(berry), pos(0,1)),
+    cell(obstacle(flower), pos(0,2)),
+    cell(obstacle(water), pos(0,3))
 ]).
 
-state_two_matches([
-    piece(obstacle(leaf),   3, 0),
-    piece(obstacle(leaf),   3, 1),
-    piece(obstacle(leaf),   3, 2),
-
-    piece(obstacle(water),  3, 3),
-    piece(obstacle(water),  3, 4),
-    piece(obstacle(water),  3, 5)
+state3([
+    cell(obstacle(leaf), pos(0,0)),
+    cell(obstacle(flower), pos(0,1)),
+    cell(obstacle(flower), pos(0,2)),
+    cell(obstacle(flower), pos(0,3))
 ]).
 
-state_middle_match([
-    piece(obstacle(leaf),    4, 0),
-    piece(obstacle(apple),   4, 1),
-    piece(obstacle(apple),   4, 2),
-    piece(obstacle(apple),   4, 3),
-    piece(obstacle(berry),   4, 4)
+% state5(S), public_method(S, [pos(0,0), pos(0,1), pos(0,2), pos(0,3), pos(0,4)], F).
+state4([
+    cell(obstacle(leaf), pos(0,0)),
+    cell(obstacle(flower), pos(0,1)),
+    cell(obstacle(flower), pos(0,2)),
+    cell(obstacle(flower), pos(0,3)),
+    cell(obstacle(water), pos(0,4))
 ]).
+
+state5([
+    cell(object(lemonade), pos(0,0)),
+    cell(object(lemonade), pos(0,1)),
+    cell(object(lemonade), pos(0,2)),
+    cell(object(lemonade), pos(0,3)),
+    cell(object(lemonade), pos(0,4))
+]).
+
+testState([
+    cell(obstacle(flower), pos(0,0)),
+    cell(object(lemonade), pos(0,1)),
+    cell(none(empty), pos(0,2))
+]).
+
+rows([
+    [pos(0,0), pos(0,1), pos(0,2), pos(0,3)]
+]).
+
+cols([
+    [pos(0, 0)],
+    [pos(0, 1)],
+    [pos(0, 2)],
+    [pos(0, 3)]
+]).
+
+% Grid dimensions
+grid_width(4). % Number of Cols
+grid_height(1). % Number of Rows
