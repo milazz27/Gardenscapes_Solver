@@ -11,11 +11,6 @@ member_sublist(Pos, List) :-
     member(Sub, List),
     member(Pos, Sub).
 
-% extracts full type details for a cell at pos
-full_cell_at(State, Pos, Kind) :-
-    member(cell(Kind, Pos), State).
-
-% Change a cell at pos to be empty and update state
 set_empty(State, Pos, NewState) :-
     select(cell(_, Pos), State, Temp),
     NewState = [cell(none(empty), Pos) | Temp].
@@ -56,6 +51,10 @@ apply_column_updates(State, [Pos|Ptail], [Kind|Ktail], FinalState) :-
 %===============================================================================================%
 %   Piece-Type Lookup Methods:                                                                  %
 %===============================================================================================%
+
+% finds full type: type(subtype)
+full_cell_at(State, Pos, Kind) :-
+    member(cell(Kind, Pos), State).
 
 % piece is an obstacle
 piece_at(State, Pos, Type) :-
