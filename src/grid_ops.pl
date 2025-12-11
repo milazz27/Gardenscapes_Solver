@@ -52,7 +52,7 @@ unswappable(State, Pos1, Pos2) :-
 % Defines a valid Swap: pieces must not be both empty or both objects
 % pieces must be adjacent to swap them.
 valid_swap(State, Pos1, Pos2) :-
-    /+ unswappable(State, Pos1, Pos2),
+    \+ unswappable(State, Pos1, Pos2),
     adjacent(Pos1, Pos2).
 
 
@@ -61,16 +61,12 @@ valid_swap(State, Pos1, Pos2) :-
 initial_state(State) :-
     findall(piece(Type, Row, Col), piece(Type, Row, Col), State).
 
-% Get grid dimensions
-get_grid_dimensions(Width, Height) :-
-    grid_width(Width),
-    grid_height(Height).
 
 
 % swap operation
 swap_op(State, Type1, R1, C1, Type2, R2, C2, NewState) :-
     select(piece(Type1, R1, C2), State, TempState),
-    select(piece(Type2, R2, C2), TempState, TempState2),
+    select(piece(Type2, R2, C2), TempState, _),
     NewState = [piece(Type1, R2, C2), piece(Type2, R1, C1)].
 
 %swap routine
