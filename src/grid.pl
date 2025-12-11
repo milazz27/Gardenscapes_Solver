@@ -1,7 +1,12 @@
+% grid.pl --- core definitions + access methods for elements of the grid %
 
-%-------------------------------------------------------------------------------------------%
-% Defining Obstacle Objects:
-%-------------------------------------------------------------------------------------------%
+%===============================================================================================%
+%   Type Definitions:                                                                           %
+%===============================================================================================%
+
+%===============================================================================================%
+%   Defining Obstacle Types:                                                                    %
+%===============================================================================================%
 
 % is_obstacle(X) :- X in {leaf, flower, apple, berry, water}
 is_obstacle(leaf).
@@ -11,43 +16,53 @@ is_obstacle(berry).
 is_obstacle(water).
 
 % obstacle(X, A, B) :- X in {leaf, flower, apple, berry, water} AND A AND B
-obstacle(leaf, pos(Row, Col)).
-obstacle(flower, pos(Row, Col)).
-obstacle(apple, pos(Row, Col)).
-obstacle(berry, pos(Row, Col)).
-obstacle(water, pos(Row, Col)).
+obstacle(leaf, pos(_, _)).
+obstacle(flower, pos(_, _)).
+obstacle(apple, pos(_, _)).
+obstacle(berry, pos(_, _)).
+obstacle(water, pos(_, _)).
 
-%-------------------------------------------------------------------------------------------%
-% Defining Objects:
-%-------------------------------------------------------------------------------------------%
+%===============================================================================================%
+%   Defining Object Types:                                                                      %
+%===============================================================================================%
 
 % is_object(X) :- X in {lemonade}
 is_object(lemonade).
 
 % object(X,A,B) :- X in {lemonade} AND A AND B
-object(lemonade, pos(Row, Col)).
+object(lemonade, pos(_, _)).
 
-%-------------------------------------------------------------------------------------------%
-% Definition for Empty Cells
-%-------------------------------------------------------------------------------------------%
+%===============================================================================================%
+%   Defining Empty Types:                                                                       %
+%===============================================================================================%
 
+% is_none(X) :- X in {empty}
 is_none(empty).
 
-none(empty, pos(Row, Col)).
+% none(X,A,B) :- X in {empty} AND A AND B
+none(empty, pos(_, _)).
 
 %===============================================================================================%
 %   Defining Getters:                                                                           %
 %===============================================================================================%
 
 %===============================================================================================%
-%   Dimension Getters:                                                                          %
+%   Position/Dimension Getters:                                                                 %
 %===============================================================================================%
 
+% Get Row & Column
 get_row_col(pos(R, C), R, C).
+
+% Get Row
 get_row(pos(R, _), R).
+
+% Get Column
 get_col(pos(_,C), C).
 
-
+% Get grid dimensions
+get_grid_dimensions(Width, Height) :-
+    grid_width(Width),
+    grid_height(Height).
 
 %===============================================================================================%
 %   Getters for Cell Type :                                                                     %
@@ -67,3 +82,23 @@ cell_holds_empty(State, Pos) :-
 cell_holds_object(State, Pos) :-
     piece_at(State, Pos, Type),
     is_object(Type).
+
+%===============================================================================================%
+%   Piece-Type Getter Methods:                                                                  %
+%===============================================================================================%
+
+% finds full type: type(subtype)
+full_cell_at(State, Pos, Kind) :-
+    member(cell(Kind, Pos), State).
+
+% piece is an obstacle
+piece_at(State, Pos, Type) :-
+    member(cell(obstacle(Type), Pos), State).
+
+% piece is an object
+piece_at(State, Pos, Type) :-
+    member(cell(object(Type), Pos), State).
+
+% empty cell at position
+piece_at(State, Pos, Type) :-
+    member(cell(none(Type), Pos), State).
