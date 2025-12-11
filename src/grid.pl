@@ -35,12 +35,35 @@ is_none(empty).
 
 none(empty, pos(Row, Col)).
 
-%-------------------------------------------------------------------------------------------%
-% Definition for Extra Grid Utilities:
-%-------------------------------------------------------------------------------------------%
+%===============================================================================================%
+%   Defining Getters:                                                                           %
+%===============================================================================================%
+
+%===============================================================================================%
+%   Dimension Getters:                                                                          %
+%===============================================================================================%
 
 get_row_col(pos(R, C), R, C).
 get_row(pos(R, _), R).
 get_col(pos(_,C), C).
 
 
+
+%===============================================================================================%
+%   Getters for Cell Type :                                                                     %
+%===============================================================================================%
+
+% Determining if cell holds an obstacle type
+cell_holds_obstacle(State, Pos) :-
+    piece_at(State, Pos, Type),
+    is_obstacle(Type).
+
+% Determining if cell holds a none type
+cell_holds_empty(State, Pos) :-
+    piece_at(State, Pos, Type),
+    is_none(Type).
+
+% Determining if cell holds an object type
+cell_holds_object(State, Pos) :-
+    piece_at(State, Pos, Type),
+    is_object(Type).

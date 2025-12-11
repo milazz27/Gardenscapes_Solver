@@ -1,0 +1,27 @@
+> reimplement swappability functions for rdefined way of
+    representing the things
+
+> define goal state and add parameter to source files that tell you how many objects
+
+> add some documentation. Explicit about logical structure of
+    > discuss the general structure of how prolog functions 
+    operations and defs:
+        - cell types
+        - adjacency 
+        - matching rules
+        - swappability
+            + pieces can be swapped unless they are the following:
+                1. pieces cannot both be empty
+                2. pieces cannot both be objects
+            + Additionally, pieces must be adjacent to swap them
+
+
+> look more into A* algorithm 
+
+> make the print format better (buffer cell print), add guide marks for screen shots
+
+> make some more example boards
+
+> structure make files for execution
+
+> add layer to program where nodes with highest adjacency score after swap (4) 

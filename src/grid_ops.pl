@@ -1,4 +1,4 @@
-:- ['gridArrangement1.pl'].
+
 :- ['grid.pl'].
 :- use_module(library(http/json)).
 
@@ -34,28 +34,26 @@ adjacent(Pos1, Pos2) :-
     Col1 =:= Col2,
     Row1 =:= Row2 + 1.
 
-%-------------------------------------------------------------------------------------------%
-% Definition for Valid Swaps:
-%-------------------------------------------------------------------------------------------%
-% -- takes in type cell(type(name), pos(r, c))
+%===============================================================================================%
+%   Definitions for Valid Swaps:                                                                %
+%===============================================================================================%
 
 % Cannot swap 2 empty cells
-unswappable(P1, P2) :- 
-    is_empty(P1),
-    is_empty(P2),
+unswappable(State, Pos1, Pos2) :- 
+    cell_holds_empty(State, Pos1),
+    cell_holds_empty(State, Pos2),
     !.
 
-unswappable(P1, P2) :- 
-    is_object(P1),
-    is_object(P2).
+% Cannot swap 2 objects
+unswappable(State, Pos1, Pos2) :- 
+    cell_holds_object(State, Pos1),
+    cell_holds_object(State, Pos2).
 
-valid_swap(R1, C1, R2, C2) :-
-    piece(Type1, R1, C1),
-    piece(Type2, R2, C2),
-    \+ unswappable(Type1, Type2),
-    adjacent(R1, C1, R2, C2).
-
-
+% Defines a valid Swap: pieces must not be both empty or both objects
+% pieces must be adjacent to swap them.
+valid_swap(State, Pos1, Pos2) :-
+    /+ unswappable(State, Pos1, Pos2),
+    adjacent(Pos1, Pos2).
 
 
 
@@ -68,9 +66,6 @@ get_grid_dimensions(Width, Height) :-
     grid_width(Width),
     grid_height(Height).
 
-% Lookup piece type
-identify_piece(State, Row, Col, Type) :-
-    member(piece(obstacle(Type), Row, Col), State).
 
 % swap operation
 swap_op(State, Type1, R1, C1, Type2, R2, C2, NewState) :-
