@@ -1,4 +1,7 @@
-> reimplement swappability functions for rdefined way of
+submissions: selmer@rpi.edu
+
+
+DONE !> reimplement swappability functions for rdefined way of
     representing the things
 
 > define goal state and add parameter to source files that tell you how many objects
