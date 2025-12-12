@@ -55,9 +55,11 @@ valid_swap(State, Pos1, Pos2) :-
     \+ unswappable(State, Pos1, Pos2),
     adjacent(Pos1, Pos2).
 
+%===============================================================================================%
+%   Defining The Goal State:                                                                    %
+%===============================================================================================%
 
-
-
+% approach is to grab the 'ground' row, parse for num of objects, compare to num objects overall
 initial_state(State) :-
     findall(piece(Type, Row, Col), piece(Type, Row, Col), State).
 
