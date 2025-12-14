@@ -57,33 +57,11 @@ finalize_runs(Visited, AllRuns, AllRuns) :-
 %===============================================================================================%
 
 % Base-Case: used to find matches in a line
-traverse(_, _, [], Visited, AllRuns, Final) :-
+traverse_for_matches(_, _, [], Visited, AllRuns, Final) :-
     finalize_runs(Visited, AllRuns, Final).
 
 % Recursive Case: used to find matches in a line
-traverse(State, PrevType, [CurrentPos | T], Visited, AllRuns, Final) :-
+traverse_for_matches(State, PrevType, [CurrentPos | T], Visited, AllRuns, Final) :-
     piece_at(State, CurrentPos, Type),
     check_run(PrevType, Type, CurrentPos, Visited, NewV, AllRuns, NewR),
     traverse(State, Type, T, NewV, NewR, Final).
-
-%===============================================================================================%
-%   Public Methods:                                                                             %
-%===============================================================================================%
-
-% Check for match in row
-public_method_check_move(State, Pos) :-
-    rows(Rows),
-    get_row(Pos, R),
-    nth0(R, Rows, [_|T1]),
-    piece_at(State, Pos, Type),
-    traverse(State, Type, T1, [Pos], [], Final),
-    member_sublist(Pos, Final).
-
-% check for match in col
-public_method_check_move(State, Pos) :-
-    cols(Cols),
-    get_col(Pos, C),
-    nth0(C, Cols, [_|T2]),
-    piece_at(State, Pos, Type),
-    traverse(State, Type, T2, [Pos], [], Final2),
-    member_sublist(Pos, Final2).
