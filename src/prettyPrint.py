@@ -27,7 +27,7 @@ def print_grid(grid, title=None):
         print(f"\n=== {title} ===")
 
     # Top border
-    print("\'" + (" " * (CELL_WIDTH + 2)) * cols + "\'", end="\n\n")
+    print("•" + (" " * (CELL_WIDTH + 2)) * cols + "•", end="\n\n")
 
     for row in grid:
         for cell in row:
@@ -37,7 +37,7 @@ def print_grid(grid, title=None):
         print("\n")
     
     # Bottom border
-    print("\'" + (" " * (CELL_WIDTH + 2)) * cols + "\'\n")
+    print("•" + (" " * (CELL_WIDTH + 2)) * cols + "•\n")
 
 
 # ---------------------------------------------------------
@@ -71,7 +71,7 @@ def build_grid(level):
 # Example usage
 # ---------------------------------------------------------
 if __name__ == "__main__":
-    with open("../test/p1.json") as json_file:
+    with open("../test/p3.json") as json_file:
         level = json.load(json_file)
 
     grid = build_grid(level)
