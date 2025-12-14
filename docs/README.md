@@ -9,5 +9,5 @@ To be specific, I will be abstacting levels of the game where the goal is to mat
 ## References
 
 - Ivan Bratko. *Prolog Programming for Artificial Intelligence-- Fourth Edition*. Pearson, 2012.
-- Gardenscapes Game: [text](https://play.google.com/store/apps/details?id=com.playrix.gardenscapes)
-- GIF Creation Tool: [text](https://ezgif.com/)
+- Gardenscapes Game: https://play.google.com/store/apps/details?id=com.playrix.gardenscapes
+- GIF Creation Tool: https://ezgif.com/
