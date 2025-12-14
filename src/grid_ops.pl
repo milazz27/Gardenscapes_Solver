@@ -36,6 +36,16 @@ adjacent(Pos1, Pos2) :-
     Row1 =:= Row2 + 1.
 
 %===============================================================================================%
+%   Checks if Swap Generates Match:                                                             %
+%===============================================================================================%
+
+generates_match(Pos1, Pos2, State) :-
+    full_cell_at(State, Pos1, Type1),
+    full_cell_at(State, Pos2, Type2),
+    swap_op(State, Type1, Pos1, Type2, Pos2, TempState),
+    piece_in_match(TempState, Pos2).
+
+%===============================================================================================%
 %   Definitions for Valid Swaps:                                                                %
 %===============================================================================================%
 
@@ -50,21 +60,41 @@ unswappable(State, Pos1, Pos2) :-
     cell_holds_object(State, Pos1),
     cell_holds_object(State, Pos2).
 
+col_index_in_bounds(Pos1, Pos2) :-
+    width(W),
+    get_col(Pos1, C1),
+    get_col(Pos2, C2),
+    WBound is W - 1,
+    C1 =< WBound, C1 >= 0,
+    C2 =< WBound, C2 >= 0.
+
+row_index_in_bounds(Pos1, Pos2) :-
+    height(H),
+    get_row(Pos1, R1),
+    get_row(Pos2, R2),
+    HBound is H - 1,
+    R1 =< HBound, R1 >= 0,
+    R2 =< HBound, R2 >= 0.
+
+
 % Defines a valid Swap: pieces must not be both empty or both objects
 % pieces must be adjacent to swap them.
 valid_swap(State, Pos1, Pos2) :-
+    col_index_in_bounds(Pos1, Pos2),
+    row_index_in_bounds(Pos1, Pos2),
     \+ unswappable(State, Pos1, Pos2),
-    adjacent(Pos1, Pos2).
+    adjacent(Pos1, Pos2),
+    generates_match(Pos1, Pos2, State).
 
 %===============================================================================================%
 %   Defining The Swap Operation:                                                                %
 %===============================================================================================%
 
 % swap operation
-swap_op(State, Type1, R1, C1, Type2, R2, C2, NewState) :-
-    select(piece(Type1, R1, C2), State, TempState),
-    select(piece(Type2, R2, C2), TempState, _),
-    NewState = [piece(Type1, R2, C2), piece(Type2, R1, C1)].
+swap_op(State, Type1, Pos1, Type2, Pos2, NewState) :-
+    select(cell(Type1, Pos1), State, Temp1),
+    select(cell(Type2, Pos2), Temp1, Temp2),
+    NewState = [cell(Type1, Pos2), cell(Type2, Pos1) | Temp2].
 
 %swap routine
 swap(State, R1, C1, R2, C2, StateNew) :-
@@ -73,5 +103,7 @@ swap(State, R1, C1, R2, C2, StateNew) :-
     \+ unswappable(Type1, Type2),
     adjacent(R1, C1, R2, C2),
     swap_op(State, Type1, R1, C1, Type2, R2, C2, StateNew).
+
+
 
 

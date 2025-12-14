@@ -64,4 +64,26 @@ traverse_for_matches(_, _, [], Visited, AllRuns, Final) :-
 traverse_for_matches(State, PrevType, [CurrentPos | T], Visited, AllRuns, Final) :-
     piece_at(State, CurrentPos, Type),
     check_run(PrevType, Type, CurrentPos, Visited, NewV, AllRuns, NewR),
-    traverse(State, Type, T, NewV, NewR, Final).
+    traverse_for_matches(State, Type, T, NewV, NewR, Final).
+
+%===============================================================================================%
+%   Check for Piece in Match:                                                                   %
+%===============================================================================================%
+
+% Use to Check if piece is part of a match in a row
+piece_in_match(State, Pos) :-
+    rows(Rows),
+    get_row(Pos, R),
+    nth0(R, Rows, Row),
+    piece_at(State, Pos, Type),
+    traverse_for_matches(State, Type, Row, [], [], Final),
+    member_sublist(Pos, Final).
+
+% Use to check if the piece is part of a Col match
+piece_in_match(State, Pos) :-
+    cols(Cols),
+    get_col(Pos, C),
+    nth0(C, Cols, Col),
+    piece_at(State, Pos, Type),
+    traverse_for_matches(State, Type, Col, [], [], Final2),
+    member_sublist(Pos, Final2).

@@ -4,10 +4,6 @@
 %   File Inclusions:                                                                            %
 %===============================================================================================%
 
-:- consult('grid.pl').
-:- consult('match.pl').
-:- consult('export.pl').
-:- consult('../test/testState3.pl').
 
 %===============================================================================================%
 %   Misc Helper Methods:                                                                        %
@@ -65,7 +61,7 @@ parse(_, [], AllMatches, AllMatches).
 % Recursive Case: Parse line for matches
 parse(State, [Head | Tail], AllMatches, Final) :-
     piece_at(State, Head, Type),
-    traverse(State, Type, Tail, [Head], [], Matches),
+    traverse_for_matches(State, Type, Tail, [Head], [], Matches),
     append(AllMatches, Matches, Update),
     parse(State, Tail, Update, Final).
 
@@ -119,6 +115,9 @@ apply_gravity(State, Final) :-
 %   Public Methods:                                                                             %
 %===============================================================================================%
 
-
-
+% applies all changes
+process(State, NewState) :-
+    find_all_matches(State, Matches),
+    remove_matches(Matches, State, TempState),
+    apply_gravity(TempState, NewState).
 
