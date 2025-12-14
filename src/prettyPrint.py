@@ -71,7 +71,7 @@ def build_grid(level):
 # Example usage
 # ---------------------------------------------------------
 if __name__ == "__main__":
-    with open("../test/p3.json") as json_file:
+    with open("../test/p1.json") as json_file:
         level = json.load(json_file)
 
     grid = build_grid(level)
