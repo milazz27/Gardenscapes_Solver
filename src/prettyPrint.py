@@ -1,55 +1,78 @@
 import json
 
-def printGrid(grid):
+# ---------------------------------------------------------
+# SYMBOL MAP
+# ---------------------------------------------------------
+SYMBOLS = {
+    0: "🔳",
+    1: "🍀",
+    2: "🌸",
+    3: "🍎",
+    4: "🫐",
+    5: "💧",
+    6: "🍹",
+}
+
+CELL_WIDTH = 5   # adjust this to make spacing wider or tighter
+
+
+# ---------------------------------------------------------
+# Print a single grid with centered symbols + borders
+# ---------------------------------------------------------
+def print_grid(grid, title=None):
+    rows = len(grid)
+    cols = len(grid[0]) if rows > 0 else 0
+
+    if title:
+        print(f"\n=== {title} ===")
+
+    # Top border
+    print("\'" + (" " * (CELL_WIDTH + 2)) * cols + "\'", end="\n\n")
+
     for row in grid:
         for cell in row:
-            if cell == 1:
-                print(" 🍀   ", end = "")
-            elif cell == 2:
-                print(" 🌸   ", end = "")
-            elif cell == 3:
-                print(" 🍎   ", end = "")
-            elif cell == 4:
-                print(" 🫐   ", end = "")
-            elif cell == 5:
-                print(" 💧   ", end = "")
-            elif cell == 6:
-                print(" 🍹   ", end = "")
-            elif cell == 0:
-                print(" ⬜   ", end = "")
+            symbol = SYMBOLS.get(cell, "+")
+            print(" ", end="")
+            print(symbol.center(CELL_WIDTH), end="")
         print("\n")
+    
+    # Bottom border
+    print("\'" + (" " * (CELL_WIDTH + 2)) * cols + "\'\n")
 
 
+# ---------------------------------------------------------
+# Build a grid from a level JSON object
+# ---------------------------------------------------------
+def build_grid(level):
+    width = level["width"]
+    height = level["height"]
+    pieces = level["pieces"]
 
-with open("../test/p3.json") as json_file:
-    level = json.load(json_file)
+    grid = [[0 for _ in range(width)] for _ in range(height)]
 
-width = level["width"]
-height = level["height"]
-pieces = level["pieces"]
+    type_map = {
+        "leaf": 1,
+        "flower": 2,
+        "apple": 3,
+        "berry": 4,
+        "water": 5,
+        "lemonade": 6,
+    }
 
-grid = [[0 for _ in range(width)] for _ in range(height)]
+    for piece in pieces:
+        x = piece["row"]
+        y = piece["col"]
+        grid[x][y] = type_map.get(piece["type"], 0)
 
-for piece in pieces:
-    x = piece["row"]
-    y = piece["col"]
-    type = piece["type"]
+    return grid
 
-    print()
 
-    if type == "leaf":
-        grid[x][y] = 1
-    elif type == "flower":
-        grid[x][y] = 2
-    elif type == "apple":
-        grid[x][y] = 3
-    elif type == "berry":
-        grid[x][y] = 4
-    elif type == "water":
-        grid[x][y] = 5
-    elif type == "lemonade":
-        grid[x][y] = 6
-    else:
-        grid[x][y] = 0
+# ---------------------------------------------------------
+# Example usage
+# ---------------------------------------------------------
+if __name__ == "__main__":
+    with open("../test/p3.json") as json_file:
+        level = json.load(json_file)
 
-printGrid(grid)
+    grid = build_grid(level)
+    print_grid(grid, title="Level p3")
