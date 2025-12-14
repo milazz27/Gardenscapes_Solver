@@ -10,8 +10,8 @@ state3([
     cell(obstacle(flower), pos(1,3)),
 
     cell(obstacle(flower), pos(2,0)),
-    cell(obstacle(flower), pos(2,1)),
-    cell(obstacle(flower), pos(2,2)),
+    cell(object(lemonade), pos(2,1)),
+    cell(object(lemonade), pos(2,2)),
     cell(obstacle(flower), pos(2,3))
 ]).
 
@@ -30,3 +30,5 @@ cols([
 
 width(4).
 height(3).
+
+total_objects(2).

@@ -59,10 +59,18 @@ get_row(pos(R, _), R).
 % Get Column
 get_col(pos(_,C), C).
 
+% Get Grid Width
+get_width(Width) :-
+    width(Width).
+
+% Get Grid Height
+get_height(Height) :-
+    height(Height).
+
 % Get grid dimensions
 get_grid_dimensions(Width, Height) :-
-    grid_width(Width),
-    grid_height(Height).
+    width(Width),
+    height(Height).
 
 %===============================================================================================%
 %   Getters for Cell Type :                                                                     %
@@ -102,3 +110,31 @@ piece_at(State, Pos, Type) :-
 % empty cell at position
 piece_at(State, Pos, Type) :-
     member(cell(none(Type), Pos), State).
+
+%===============================================================================================%
+%   Defining The Goal State:                                                                    %
+%===============================================================================================%
+
+% Base Case: Ground fully traversed
+parse_ground(_, [], Ctr, Ctr).
+
+% Do not increment counter if cell doesn't hold object
+parse_ground(State, [H|T], Ctr, Fin) :-
+    \+ cell_holds_object(State, H),
+    parse_ground(State, T, Ctr, Fin).
+
+% Increment counter if another object is hit
+parse_ground(State, [H|T], Ctr, Fin) :-
+    cell_holds_object(State, H),
+    NewCount is Ctr + 1,
+    parse_ground(State, T, NewCount, Fin).
+
+% Caller function for goal state check
+goal_complete(State) :-
+    rows(Rows),
+    get_height(H),
+    Ind is H - 1,
+    nth0(Ind, Rows, Ground),
+    parse_ground(State, Ground, 0, Fin),
+    total_objects(T),
+    T =:= Fin.

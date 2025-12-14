@@ -1,3 +1,4 @@
+% grid_ops.pl -- defines valid movements on grid
 
 :- ['grid.pl'].
 :- use_module(library(http/json)).
@@ -56,14 +57,8 @@ valid_swap(State, Pos1, Pos2) :-
     adjacent(Pos1, Pos2).
 
 %===============================================================================================%
-%   Defining The Goal State:                                                                    %
+%   Defining The Swap Operation:                                                                %
 %===============================================================================================%
-
-% approach is to grab the 'ground' row, parse for num of objects, compare to num objects overall
-initial_state(State) :-
-    findall(piece(Type, Row, Col), piece(Type, Row, Col), State).
-
-
 
 % swap operation
 swap_op(State, Type1, R1, C1, Type2, R2, C2, NewState) :-

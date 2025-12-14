@@ -55,8 +55,6 @@ apply_column_updates(State, [Pos|Ptail], [Kind|Ktail], FinalState) :-
     update_cell(State, Pos, Kind, TempState),
     apply_column_updates(TempState, Ptail, Ktail, FinalState).
 
-
-
 %===============================================================================================%
 %   Find All Matches on Grid:                                                                   %
 %===============================================================================================%
@@ -121,25 +119,6 @@ apply_gravity(State, Final) :-
 %   Public Methods:                                                                             %
 %===============================================================================================%
 
-public_method_test(State, [H|T], Final) :-
-    piece_at(State, H, Type),
-    traverse(State, Type, T, [H], [], Final).
-
-% state(State), test_empty_cells(State, 'out.json').
-test_empty_cells(State, Filename1, Filename2) :-
-    export_state_to_json(State, Filename1),
-    find_all_matches(State, All),
-    remove_matches(All, State, NewState),
-    export_state_to_json(NewState, Filename2).
-
-% state3(State), test_gravity(State, 'p1.json', 'p2.json', 'p3.json').
-test_gravity(State, File1, File2, File3) :-
-    export_state_to_json(State, File1),
-    find_all_matches(State, All),
-    remove_matches(All, State, NewState),
-    export_state_to_json(NewState, File2),
-    apply_gravity(NewState, Final),
-    export_state_to_json(Final, File3).
 
 
 
