@@ -17,14 +17,12 @@ cell(object(lemonade), pos(0,0)).
 ```
 Types represent obstacles (these are the pieces that can be matched), objects (represent the piece that should reach the ground in the goal condition), or none. These are defined formally as follows:
 
-![definitions](https://latex.codecogs.com/svg.image?
+```math
 \begin{aligned}
 \text{obstacle}(X) &\rightarrow X \in \{\text{leaf},\text{apple},\text{berry},\text{water},\text{flower}\} \\
-\\
 \text{object}(X) &\rightarrow X \in \{\text{lemonade}\} \\
-\\
 \text{none}(X) &\rightarrow X \in \{\text{empty}\}
-\end{aligned})
+\end{aligned}
 
 
 
