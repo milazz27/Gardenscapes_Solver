@@ -73,7 +73,7 @@ cols([
 
 ## Mechanics of This Approach
 
-At its core, this solver operates by attempting to resolve a proposed move by *querying* the defined set of rules. A move is deemed valid if there is a path through the clauses that evaluates to true. Another core element of the solver is the inherent *backtracking* done by Prolog. This is integral to this application as I am only interested in valid swaps that will lead to the goal condition. If any swap leads to a dead-end (no further swaps possible and the grid has not reached its goal condition) the program continually goes back to previous options until all are exhausted or a valid plan is found. 
+At its core, this solver operates by attempting to resolve a proposed move by *querying* over a defined set of rules. A move is deemed valid if there is a path through the clauses that evaluates to true. Another core element of the solver is the inherent *backtracking* done in prolog. This is important in this application because I am only interested in valid swaps can succesively lead to the goal condition. 
 
 **The current algorithm runs as follows:**
 - Given a current state for the grid, identify cells that are swappable.
