@@ -1,3 +1,5 @@
+% export.pl -- just used to handle formatting output of solver to a json file.
+
 :- use_module(library(http/json)).
 
 % Convert compound piece terms to simple format
@@ -37,8 +39,8 @@ export_solution_to_json(States, Filename) :-
     open(Filename, write, Stream),
     json_write(Stream, GridData, []),
     close(Stream),
-    format('Exported solution (~w states) to ~w~n',
-           [len(States), Filename]).
+    format('Exported solution to ~w~n',
+           [Filename]).
 %===============================================================================================%
 %   Public Methods:                                                                             %
 %===============================================================================================%

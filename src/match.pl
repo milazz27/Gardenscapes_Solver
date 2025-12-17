@@ -6,8 +6,8 @@
 
 % Matching pieces (of obstacle type): add to a run.
 check_run(PrevType, Type, Pos, Visited, NewVisited, All, All) :-
-    is_obstacle(PrevType),
-    is_obstacle(Type),
+    obstacle(PrevType),
+    obstacle(Type),
     PrevType == Type,
     append(Visited, [Pos], NewVisited).
 
@@ -26,14 +26,14 @@ check_run(PrevType, Type, Pos, Visited, [Pos], AllRuns, AllRuns) :-
 
 % Piece of invalid type, but prev complete run can be cached.
 check_run(_, Type, Pos, Visited, [Pos], AllRuns, UpdatedAllRuns):-
-    \+ is_obstacle(Type),
+    \+ obstacle(Type),
     length(Visited, L),
     L >= 3,
     append(AllRuns, [Visited], UpdatedAllRuns).
 
 % Piece of invalid type, but no complete run to be cached.
 check_run(_, Type, Pos, Visited, [Pos], AllRuns, AllRuns) :-
-    \+ is_obstacle(Type),
+    \+ obstacle(Type),
     length(Visited, L),
     L < 3.
 

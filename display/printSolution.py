@@ -19,12 +19,9 @@ CELL_WIDTH = 5
 # ---------------------------------------------------------
 # Print a single grid with centered symbols + borders
 # ---------------------------------------------------------
-def print_grid(grid, title=None):
+def print_grid(grid):
     rows = len(grid)
     cols = len(grid[0]) if rows > 0 else 0
-
-    if title:
-        print(f"\n=== {title} ===")
 
     # Top border
     print("•" + (" " * (CELL_WIDTH + 2)) * cols + "•\n")
@@ -75,7 +72,9 @@ if __name__ == "__main__":
     height = data["height"]
     states = data["states"]
 
+    states.reverse()
+    states.pop(0)
+
     for state in states:
-        step = state.get("step", "?")
         grid = build_grid(state, width, height)
-        print_grid(grid, title=f"Step {step}")
+        print_grid(grid)
