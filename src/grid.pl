@@ -8,39 +8,26 @@
 %   Defining Obstacle Types:                                                                    %
 %===============================================================================================%
 
-% is_obstacle(X) :- X in {leaf, flower, apple, berry, water}
-is_obstacle(leaf).
-is_obstacle(flower).
-is_obstacle(apple).
-is_obstacle(berry).
-is_obstacle(water).
-
-% obstacle(X, A, B) :- X in {leaf, flower, apple, berry, water} AND A AND B
-obstacle(leaf, pos(_, _)).
-obstacle(flower, pos(_, _)).
-obstacle(apple, pos(_, _)).
-obstacle(berry, pos(_, _)).
-obstacle(water, pos(_, _)).
+% obstacle(X) :- X in {leaf, flower, apple, berry, water}
+obstacle(leaf).
+obstacle(flower).
+obstacle(apple).
+obstacle(berry).
+obstacle(water).
 
 %===============================================================================================%
 %   Defining Object Types:                                                                      %
 %===============================================================================================%
 
-% is_object(X) :- X in {lemonade}
-is_object(lemonade).
-
-% object(X,A,B) :- X in {lemonade} AND A AND B
-object(lemonade, pos(_, _)).
+% object(X) :- X in {lemonade}
+object(lemonade).
 
 %===============================================================================================%
 %   Defining Empty Types:                                                                       %
 %===============================================================================================%
 
-% is_none(X) :- X in {empty}
-is_none(empty).
-
-% none(X,A,B) :- X in {empty} AND A AND B
-none(empty, pos(_, _)).
+% none(X,A,B) :- X in {empty}
+none(empty).
 
 %===============================================================================================%
 %   Defining Getters:                                                                           %
@@ -90,7 +77,6 @@ cell_holds_empty(State, Pos) :-
 cell_holds_object(State, Pos) :-
     piece_at(State, Pos, Type),
     is_object(Type).
-
 
 %===============================================================================================%
 %   Piece-Type Getter Methods:                                                                  %
