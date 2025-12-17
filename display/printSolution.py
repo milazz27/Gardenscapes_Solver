@@ -60,10 +60,6 @@ def build_grid(state, width, height):
 
     return grid
 
-
-# ---------------------------------------------------------
-# Example usage: replay all states
-# ---------------------------------------------------------
 if __name__ == "__main__":
     with open("solution.json") as json_file:
         data = json.load(json_file)

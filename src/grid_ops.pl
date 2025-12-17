@@ -76,7 +76,6 @@ row_index_in_bounds(Pos1, Pos2) :-
     R1 =< HBound, R1 >= 0,
     R2 =< HBound, R2 >= 0.
 
-
 % Defines a valid Swap: pieces must not be both empty or both objects
 % pieces must be adjacent to swap them.
 valid_swap(State, Pos1, Pos2) :-

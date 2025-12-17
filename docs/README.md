@@ -5,23 +5,26 @@
 
 ## Overview:
 
-For this project, my goal was to begin to formalize an approach to the pattern-matching game, *Gardenscapes.* To do this, I approached the problem through programming in Prolog; the fundamental piece of this approach being the interaction between a set of rules (horn clauses) and queries accross these.
+For this project, my goal was to begin to formalize an approach to solve the pattern-matching game, *Gardenscapes.* To do this, began to build a solver in Prolog. This programming language naturally allows for the mechanics of the game due to its logic-based design. The programmer is able to set up a series of definitions and rules (by way of horn clauses) and then query over those to discover valid applications. In this project, rules and definitions are set up for how the grid is structured and what conditions any alterations must satisfy. 
+
 
 ## Defining States and Goal
 
-In this project I defined the grid as being made up of cells. Each cell has a type and a position.
+In this project I defined the grid as being made up of cells. Each cell has a type and a position. For example:
 
 ``` Prolog
 % defining a cell holding type object at Pos(0,0)
 cell(object(lemonade), pos(0,0)).
 ```
-Types represent obstacles (these are the pieces that can be matched), objects (represent the piece that should reach the ground in the goal condition), or none. These are defined formally as follows:
+Types represent **obstacles** (these are the pieces that can be matched and removed to advance the grid further), **objects** (represent the piece that should reach the ground in the goal condition), or **none**. They are defined formally as follows:
 
 ![](type_definitions.png)
 
-The initial state of a grid must de defined (see example below) in a prolog file and be loaded for [*solver.pl*](../src/solver.pl) before execution. 
+*Subtypes are defined this way to enable additional features to be added to the program more smoothly.*
 
-In addition to a list of cells *(types and positions)*, this file sets definitions on dimensions, number of goal objects, and positions by rows and columns for easier traversal.
+The initial state of a grid must be defined (see example below) in a prolog file and be loaded for [*solver.pl*](../src/solver.pl) before execution. 
+
+In addition to a list of cells *(types and positions)*, this file sets definitions on dimensions, number of goal objects, and positions by rows and columns for cleaner traversal.
 
 ```Prolog
 width(4).
@@ -70,17 +73,57 @@ cols([
 
 ## Mechanics of This Approach
 
-At its core, this solver operates by attempting to resolve a proposed move by *querying* over a defined set of rules. A move is deemed valid if there is a path through the clauses that evaluates to true. Another core element of the solver is the inherent *backtracking* done in prolog. This is important in this application because I am only interested in valid swaps can succesively lead to my goal condition. 
+At its core, this solver operates by attempting to resolve a proposed move by *querying* over a defined set of rules. A move is deemed valid if there is a path through the clauses that evaluates to true. Another core element of the solver is the inherent *backtracking* done in prolog. This is important in this application because I am only interested in valid swaps can succesively lead to the goal condition. 
 
-The current algorithm runs as follows:
+**The current algorithm runs as follows:**
 - Given a current state for the grid, identify cells that are swappable.
-  - To be swappable, types must be compatible, adjacent, and must generate a match.
-- A valid swap is then applied (tracked in a copy of the state) and the grid processes the change by removing all matches and applying the *gravity* functionality to move pieces from above down.
+  - To be swappable, types must be compatible, adjacent, and must generate a match. This is defined in the program as follows:
+  
+```Prolog
+% Cannot swap 2 empty cells
+unswappable(State, Pos1, Pos2) :- 
+    cell_holds_empty(State, Pos1),
+    cell_holds_empty(State, Pos2),
+    !.
+
+% Cannot swap 2 objects
+unswappable(State, Pos1, Pos2) :- 
+    cell_holds_object(State, Pos1),
+    cell_holds_object(State, Pos2).
+
+% Definitions for bounds on column index
+col_index_in_bounds(Pos1, Pos2) :-
+    width(W),
+    get_col(Pos1, C1),
+    get_col(Pos2, C2),
+    WBound is W - 1,
+    C1 =< WBound, C1 >= 0,
+    C2 =< WBound, C2 >= 0.
+
+% Definitions for bounds on row index
+row_index_in_bounds(Pos1, Pos2) :-
+    height(H),
+    get_row(Pos1, R1),
+    get_row(Pos2, R2),
+    HBound is H - 1,
+    R1 =< HBound, R1 >= 0,
+    R2 =< HBound, R2 >= 0.
+
+% Defines a valid Swap: pieces must not be both empty or both objects
+% pieces must be adjacent and in-bounds to swap them.
+valid_swap(State, Pos1, Pos2) :-
+    col_index_in_bounds(Pos1, Pos2),
+    row_index_in_bounds(Pos1, Pos2),
+    \+ unswappable(State, Pos1, Pos2),
+    adjacent(Pos1, Pos2),
+    generates_match(Pos1, Pos2, State).
+```
+- A valid swap is then applied (tracked in a **copy** of the new state) and the grid processes the change by removing all matches and applying the *gravity* functionality to move pieces from above down.**
   
 ![Gravity Functionality](match+grav_ex.gif)
 
 - The grid is then checked for the goal condition.
-  - If the goal is met, the program is able to export a list of the intermediate states that led to the result.
+  - If the goal is met, the program is able to export a list of the intermediate states that led to the result to a file for display formatting. Additionally, a list of the swaps made will be displayed in the terminal.
   - If the goal is not met and there are further swaps to be applied, it continues.
   - If the goal is not met and no more swaps can be applied it **backtracks** and attempts to find a different plan to reach the goal.
 - In the case where there is no solution the program will return false.
@@ -96,14 +139,12 @@ The following animation is put together from the output of intermediate states f
 
 [Sample Program Run](walkthrough.mp4)
 
-## Running The Program
-
 
 ## Further Steps
 
-I hope to extend my work on this project further, particularly in the approach to picking the next move to attempt. Currently, the algorithm takes a naive approach and must rely heavily on backtracking (becomes more difficult on larger grids!). I plan to improve this by finding different routes for the solver to take in' more information about the grid arrangement. I would also like to introduce additional features to the program including:
-- New piece generation 
-- Power-ups (similar to those implemented in the original game)
+I hope to extend my work on this project further, particularly in the approach to selecting the next move to attempt. Currently, the algorithm takes a naive approach and must rely heavily on backtracking (becomes more difficult on larger grids!). There are additional conclusions that solver can make by examining the states in different ways that could aid in making its choices better informed. I would also like to introduce additional features to the program including:
+- New piece generation at the top of the grid to replace empty cells.
+- Power-ups (similar to those implemented in the original game) that clear a larger segment of the grid.
 
 ## References
 
