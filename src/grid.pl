@@ -66,17 +66,17 @@ get_grid_dimensions(Width, Height) :-
 % Determining if cell holds an obstacle type
 cell_holds_obstacle(State, Pos) :-
     piece_at(State, Pos, Type),
-    is_obstacle(Type).
+    obstacle(Type).
 
 % Determining if cell holds a none type
 cell_holds_empty(State, Pos) :-
     piece_at(State, Pos, Type),
-    is_none(Type).
+    none(Type).
 
 % Determining if cell holds an object type
 cell_holds_object(State, Pos) :-
     piece_at(State, Pos, Type),
-    is_object(Type).
+    object(Type).
 
 %===============================================================================================%
 %   Piece-Type Getter Methods:                                                                  %

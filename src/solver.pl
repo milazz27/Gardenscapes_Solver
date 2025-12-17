@@ -9,9 +9,7 @@
 :- ['match.pl'].
 :- ['export.pl'].
 :- ['process_change.pl'].
-:- ['../test/4x4_1.pl'].
-
-
+:- ['../test/6x6_1.pl'].
 
 %===============================================================================================%
 %   Discover All Viable Swaps                                                                   %
@@ -89,23 +87,23 @@ apply_swap(State, [Pos1, Pos2], NewState) :-
     swap_op(State, Type1, Pos1, Type2, Pos2, NewState).
 
 % solve(State, PotentialSwaps, Progress, NewState)
-
-solve(State, _, Progress, Res) :-
+solve(State, _, Plan, Plan, Progress, Res) :-
     goal_complete(State),
     reverse([State | Progress], Res).
 
-solve(State, Swaps, Progress, Res) :-
+solve(State, Swaps, Plan, FullPlan, Progress, Res) :-
     member(Swap, Swaps),   
     apply_swap(State, Swap, Swapped),    
     process(Swapped, NewState),          
     \+ member(Swapped, Progress),       
     \+ member(NewState, Progress),       
     append(Progress, [Swapped, NewState], NewProgress),
+    append(Plan, [Swap], UpdatedPlan),
     all_swaps_on_grid(NewState, NewSwaps),
-    solve(NewState, NewSwaps, NewProgress, Res).
+    solve(NewState, NewSwaps, UpdatedPlan, FullPlan, NewProgress, Res).
 
-test_solver(Sol) :-
-    state44(State),
+solver(Sol) :-
+    state(State),
     all_swaps_on_grid(State, AllSwaps),
-    solve(State, AllSwaps, [], Sol),
-    export_solution_to_json(Sol, 'solution.json').
+    solve(State, AllSwaps,[], Sol, [State], Res),
+    export_solution_to_json(Res, '../display/solution.json').
