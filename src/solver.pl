@@ -1,4 +1,4 @@
-% solver.pl -- this is where solving functionality is implemented
+% solver.pl -- main driver; this is where solving functionality is implemented
 
 %===============================================================================================%
 %   File Inclusions:                                                                            %
@@ -9,7 +9,7 @@
 :- ['match.pl'].
 :- ['export.pl'].
 :- ['process_change.pl'].
-:- ['../test/6x6_1.pl'].
+:- ['../test/6x6_1.pl']. % this is the file where the initial state is defined
 
 %===============================================================================================%
 %   Discover All Viable Swaps                                                                   %

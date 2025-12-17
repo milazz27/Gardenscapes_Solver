@@ -11,7 +11,6 @@ TYPE_MAP = {
     "empty":     "none(empty)"
 }
 
-
 # ---------------------------------------------------------
 # Read cell types from a file (one per line)
 # ---------------------------------------------------------
@@ -19,7 +18,6 @@ def read_cell_types(filename):
     with open(filename, "r") as f:
         lines = [line.strip() for line in f.readlines() if line.strip()]
     return lines
-
 
 # ---------------------------------------------------------
 # Generate rows and cols as strings
@@ -63,7 +61,7 @@ def format_state_text(name, height, width, cell_types):
             prolog_term = TYPE_MAP.get(cell_type, f"obstacle({cell_type})")
             comma = "," if idx < total else ""
             out.append(f"    cell({prolog_term}, pos({r},{c})){comma}")
-        out.append("")  # blank line between rows
+        out.append("")
 
     out.append("]).\n")
     return "\n".join(out)
@@ -84,10 +82,6 @@ def write_to_file(filename, text):
         f.write(text)
     print(f"\n✅ Successfully wrote Prolog file: {filename}\n")
 
-
-# ---------------------------------------------------------
-# Main interactive program
-# ---------------------------------------------------------
 if __name__ == "__main__":
     print("Enter grid dimensions:")
     height = int(input("Height: "))
